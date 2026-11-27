@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f172a"/>
+  <rect x="86" y="346" width="340" height="22" rx="6" fill="#f59e0b"/>
+  <!-- Left tower -->
+  <polygon points="116,340 132,190 198,190 206,340" fill="#38bdf8" opacity="0.9"/>
+  <rect x="148" y="254" width="22" height="24" rx="2" fill="#0f172a"/>
+  <!-- Center tall tower -->
+  <polygon points="214,340 200,114 312,114 298,340" fill="#f8fafc"/>
+  <rect x="243" y="182" width="26" height="28" rx="3" fill="#0f172a"/>
+  <!-- Right tower -->
+  <polygon points="306,340 314,224 396,224 382,340" fill="#f59e0b"/>
+  <rect x="340" y="270" width="20" height="22" rx="2" fill="#0f172a"/>
+  <!-- Bottom wordmark bar -->
+  <rect x="166" y="392" width="180" height="10" rx="5" fill="#94a3b8" opacity="0.55"/>
+</svg>
