@@ -1,8 +1,8 @@
 import React from 'react';
-import {ClipboardList, LayoutGrid, QrCode} from 'lucide-react';
+import {Bot, ClipboardList, LayoutGrid, QrCode} from 'lucide-react';
 import {PWAInstallButton} from './PWAInstallButton';
 
-export type AppMode = 'catalog' | 'qr';
+export type AppMode = 'catalog' | 'qr' | 'chat';
 
 interface HeaderProps {
   mode: AppMode;
@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <header className="sticky top-0 z-30 bg-[#0f172a] text-white border-b border-slate-800">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 flex items-center justify-between gap-3 sm:gap-8">
+      <div className="max-w-7xl mx-auto px-2.5 sm:px-6 h-14 flex items-center justify-between gap-2 sm:gap-6">
         {/* Zone 1: Brand Title */}
         <a
           href="/"
@@ -27,12 +27,12 @@ export const Header: React.FC<HeaderProps> = ({
             e.preventDefault();
             onNavigateMode('catalog');
           }}
-          className="flex items-center gap-2.5 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-md"
+          className="flex items-center gap-2 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-md"
         >
           <span className="inline-flex items-center justify-center bg-[#f59e0b] text-slate-950 font-extrabold text-sm px-2 py-0.5 rounded-md tracking-tight">
             סבן
           </span>
-          <span className="text-sm sm:text-base font-bold tracking-tight text-white">
+          <span className="hidden sm:inline text-sm md:text-base font-bold tracking-tight text-white">
             ח. סבן חומרי בניין
           </span>
         </a>
@@ -40,12 +40,12 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Zone 2: Mode Navigation Toggle */}
         <nav
           aria-label="ניווט מצבי תצוגה"
-          className="flex items-center gap-1 sm:gap-2 bg-slate-800/80 p-1 rounded-lg border border-slate-700/80 shrink-0"
+          className="flex items-center gap-1 sm:gap-1.5 bg-slate-800/80 p-1 rounded-lg border border-slate-700/80 shrink-0"
         >
           <button
             type="button"
             onClick={() => onNavigateMode('qr')}
-            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               mode === 'qr'
                 ? 'bg-white text-slate-900 shadow-sm'
                 : 'text-slate-300 hover:text-white'
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => onNavigateMode('catalog')}
-            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+            className={`inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
               mode === 'catalog'
                 ? 'bg-white text-slate-900 shadow-sm'
                 : 'text-slate-300 hover:text-white'
@@ -67,6 +67,19 @@ export const Header: React.FC<HeaderProps> = ({
             <LayoutGrid className="w-3.5 h-3.5 shrink-0" />
             <span className="hidden md:inline">קטלוג מלא לחיפוש</span>
             <span className="md:hidden">קטלוג</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigateMode('chat')}
+            className={`inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 rounded-md text-xs font-medium transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+              mode === 'chat'
+                ? 'bg-white text-slate-900 shadow-sm'
+                : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            <Bot className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden md:inline">יועצת דלפק (AI)</span>
+            <span className="md:hidden">נועה AI</span>
           </button>
         </nav>
 

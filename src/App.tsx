@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {CatalogView} from './components/CatalogView';
+import {CounterChatView} from './components/chat/CounterChatView';
 import {FloatingOrderBar} from './components/FloatingOrderBar';
 import {Footer} from './components/Footer';
 import {AppMode, Header} from './components/Header';
@@ -34,6 +35,10 @@ function parseCurrentRoute(): RouteState {
 
   if (pathname === '/product' || pathname === '/product/') {
     return {mode: 'qr', sku: null};
+  }
+
+  if (pathname === '/chat' || pathname.startsWith('/chat/')) {
+    return {mode: 'chat', sku: null};
   }
 
   return {mode: 'catalog', sku: null};
@@ -126,7 +131,9 @@ export default function App() {
 
   // Keep page title synced with active view
   useEffect(() => {
-    if (route.mode === 'qr' && qrProduct) {
+    if (route.mode === 'chat') {
+      document.title = 'נועה AI — יועצת דלפק וידע טכני | ח. סבן';
+    } else if (route.mode === 'qr' && qrProduct) {
       document.title = `${qrProduct.name} | מק״ט ${qrProduct.sku} — ח. סבן`;
     } else if (route.mode === 'qr' && route.sku) {
       document.title = `מק״ט ${route.sku} | שילוט מדף — ח. סבן`;
@@ -140,6 +147,14 @@ export default function App() {
       window.history.pushState({}, '', '/');
     }
     setRoute({mode: 'catalog', sku: null});
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }, []);
+
+  const navigateToChat = useCallback(() => {
+    if (window.location.pathname !== '/chat' || window.location.search !== '') {
+      window.history.pushState({}, '', '/chat');
+    }
+    setRoute({mode: 'chat', sku: null});
     window.scrollTo({top: 0, behavior: 'smooth'});
   }, []);
 
@@ -159,12 +174,14 @@ export default function App() {
     (nextMode: AppMode) => {
       if (nextMode === 'catalog') {
         navigateToCatalog();
+      } else if (nextMode === 'chat') {
+        navigateToChat();
       } else {
         const fallbackSku = route.sku || catalog[0]?.sku || '10002';
         navigateToProduct(fallbackSku);
       }
     },
-    [catalog, route.sku, navigateToCatalog, navigateToProduct],
+    [catalog, route.sku, navigateToCatalog, navigateToChat, navigateToProduct],
   );
 
   const cartQtyForQrProduct = qrProduct
@@ -183,7 +200,13 @@ export default function App() {
       />
 
       <div className="flex-1">
-        {route.mode === 'qr' ? (
+        {route.mode === 'chat' ? (
+          <CounterChatView
+            catalog={catalog}
+            onNavigateProduct={navigateToProduct}
+            onAddToCart={addItem}
+          />
+        ) : route.mode === 'qr' ? (
           <QrProductView
             sku={route.sku}
             product={qrProduct}
@@ -211,11 +234,13 @@ export default function App() {
 
       <Footer />
 
-      <FloatingOrderBar
-        itemCount={totalItemsCount}
-        unitCount={totalUnitsCount}
-        onOpen={() => setIsDrawerOpen(true)}
-      />
+      {route.mode !== 'chat' && (
+        <FloatingOrderBar
+          itemCount={totalItemsCount}
+          unitCount={totalUnitsCount}
+          onOpen={() => setIsDrawerOpen(true)}
+        />
+      )}
 
       <OrderDrawer
         isOpen={isDrawerOpen}
